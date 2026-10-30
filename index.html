@@ -1,0 +1,985 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Importadora Celeste: repuestos automotores para Chevrolet, Suzuki, Isuzu y ACDelco.">
+  <title>Importadora Celeste | Repuestos automotores</title>
+
+  <style>
+    :root {
+      --azul: #438dcc;
+      --azul-oscuro: #142c4c;
+      --azul-claro: #edf6ff;
+      --texto: #263548;
+      --verde: #20bd5a;
+      --blanco: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--texto);
+      line-height: 1.6;
+      background: var(--blanco);
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .barra-superior {
+      background: var(--azul-oscuro);
+      color: white;
+      text-align: center;
+      padding: 9px 15px;
+      font-size: 14px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      box-shadow: 0 3px 15px #00000012;
+      padding: 14px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .marca-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--azul-oscuro);
+      font-weight: bold;
+      font-size: 19px;
+    }
+
+    .marca-logo img {
+      width: 75px;
+      height: 65px;
+      object-fit: contain;
+    }
+
+    nav {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--azul-oscuro);
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: var(--azul);
+    }
+
+    .boton {
+      display: inline-block;
+      background: var(--azul);
+      color: white;
+      padding: 12px 19px;
+      border-radius: 8px;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .boton:hover {
+      filter: brightness(0.92);
+      transform: translateY(-1px);
+    }
+
+    .boton-verde {
+      background: var(--verde);
+      color: white;
+    }
+
+    .portada {
+      min-height: 490px;
+      padding: 80px 7%;
+      display: flex;
+      align-items: center;
+      color: white;
+      background:
+        linear-gradient(100deg, #102746f5, #174e81df, #163b5a70),
+        url("images/01_surtido_autopartes.png") center/cover no-repeat;
+    }
+
+    .portada-contenido {
+      max-width: 720px;
+    }
+
+    .etiqueta {
+      display: inline-block;
+      background: #ffffff20;
+      border: 1px solid #ffffff80;
+      padding: 7px 14px;
+      border-radius: 30px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: clamp(36px, 5vw, 59px);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .portada p {
+      font-size: 18px;
+      margin-bottom: 25px;
+      max-width: 630px;
+    }
+
+    section {
+      padding: 65px 7%;
+    }
+
+    .encabezado-seccion {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 35px;
+    }
+
+    .encabezado-seccion h2 {
+      color: var(--azul-oscuro);
+      font-size: clamp(27px, 4vw, 39px);
+      margin-bottom: 10px;
+    }
+
+    .encabezado-seccion p {
+      color: #64748b;
+    }
+
+    .beneficios {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .beneficio {
+      background: #f5f8fc;
+      border: 1px solid #e4edf7;
+      border-radius: 14px;
+      padding: 26px;
+      text-align: center;
+    }
+
+    .beneficio .icono {
+      font-size: 36px;
+    }
+
+    .beneficio h3 {
+      color: var(--azul-oscuro);
+      margin: 10px 0;
+    }
+
+    .catalogo {
+      background: var(--azul-claro);
+    }
+
+    .filtros {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .filtro {
+      padding: 10px 16px;
+      border: 1px solid #c9d9eb;
+      border-radius: 25px;
+      background: white;
+      color: var(--azul-oscuro);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .filtro.activo,
+    .filtro:hover {
+      background: var(--azul);
+      color: white;
+      border-color: var(--azul);
+    }
+
+    .productos {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .producto {
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 22px #16395c12;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .producto:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px #16395c20;
+    }
+
+    .producto img {
+      display: block;
+      width: 100%;
+      height: 235px;
+      object-fit: contain;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .producto-contenido {
+      padding: 21px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1;
+    }
+
+    .categoria {
+      display: inline-block;
+      background: #e8f3ff;
+      color: #235b91;
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 9px;
+    }
+
+    .producto h3 {
+      color: var(--azul-oscuro);
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .producto p {
+      font-size: 14px;
+      color: #64748b;
+      margin-bottom: 18px;
+    }
+
+    .producto .boton {
+      margin-top: auto;
+      font-size: 14px;
+      padding: 11px 14px;
+    }
+
+    .marcas {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .marca {
+      padding: 17px 27px;
+      border: 1px solid #d7e4f0;
+      border-radius: 10px;
+      color: var(--azul-oscuro);
+      font-size: 21px;
+      font-weight: 800;
+      background: white;
+    }
+
+    .llamada {
+      background: linear-gradient(130deg, #142c4c, #337db8);
+      color: white;
+      text-align: center;
+    }
+
+    .llamada h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      margin-bottom: 12px;
+    }
+
+    .llamada p {
+      max-width: 720px;
+      margin: 0 auto 24px;
+    }
+
+    .contacto {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 35px;
+      align-items: start;
+    }
+
+    .contacto h2 {
+      color: var(--azul-oscuro);
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .contacto p {
+      color: #64748b;
+      margin-bottom: 18px;
+    }
+
+    form {
+      background: #f5f8fc;
+      padding: 25px;
+      border-radius: 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 12px 0 5px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font: inherit;
+      background: white;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    form button {
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    footer {
+      background: #101f36;
+      color: #dce7f4;
+      text-align: center;
+      padding: 30px 15px;
+      font-size: 14px;
+    }
+
+    footer p {
+      margin: 5px 0;
+    }
+
+    .whatsapp-flotante {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 200;
+      background: var(--verde);
+      color: white;
+      padding: 14px 19px;
+      border-radius: 40px;
+      font-weight: bold;
+      box-shadow: 0 4px 15px #0003;
+    }
+
+    .oculto {
+      display: none !important;
+    }
+
+    @media (max-width: 950px) {
+      header {
+        justify-content: center;
+      }
+
+      nav {
+        justify-content: center;
+      }
+
+      .productos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .contacto {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .portada {
+        padding: 55px 6%;
+        min-height: 430px;
+      }
+
+      section {
+        padding: 48px 6%;
+      }
+
+      .productos,
+      .beneficios {
+        grid-template-columns: 1fr;
+      }
+
+      .producto img {
+        height: 250px;
+      }
+
+      nav {
+        gap: 12px;
+      }
+
+      nav a {
+        font-size: 13px;
+      }
+
+      .marca-logo {
+        font-size: 16px;
+      }
+
+      .whatsapp-flotante {
+        right: 12px;
+        bottom: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="barra-superior">
+    Importadora Celeste · Repuestos automotores · Atención personalizada
+  </div>
+
+  <header>
+    <a class="marca-logo" href="#inicio">
+      <img src="images/logo-importadora-celeste.jpg"
+           alt="Logo Importadora Celeste"
+           onerror="this.style.display='none'">
+      <span>IMPORTADORA CELESTE</span>
+    </a>
+
+    <nav aria-label="Menú principal">
+      <a href="#inicio">Inicio</a>
+      <a href="#repuestos">Repuestos</a>
+      <a href="#marcas">Marcas</a>
+      <a href="#asesoria">Asesoría</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <a class="boton boton-verde"
+       href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20un%20repuesto"
+       target="_blank" rel="noopener">
+      WhatsApp
+    </a>
+  </header>
+
+  <main>
+
+    <!-- PORTADA -->
+    <section class="portada" id="inicio">
+      <div class="portada-contenido">
+        <span class="etiqueta">IMPORTADORA CELESTE · AUTOPARTES</span>
+
+        <h1>El repuesto correcto para seguir tu camino</h1>
+
+        <p>
+          Encuentra repuestos automotores para Chevrolet, Suzuki, Isuzu
+          y ACDelco. Te ayudamos a consultar la pieza adecuada para tu
+          vehículo y su disponibilidad.
+        </p>
+
+        <a class="boton boton-verde"
+           href="https://wa.me/573118736119?text=Hola%2C%20quiero%20consultar%20por%20un%20repuesto"
+           target="_blank" rel="noopener">
+          Consultar por WhatsApp
+        </a>
+
+        <a class="boton"
+           href="#repuestos">
+          Ver catálogo
+        </a>
+      </div>
+    </section>
+
+    <!-- BENEFICIOS -->
+    <section>
+      <div class="encabezado-seccion">
+        <h2>¿Por qué consultar con nosotros?</h2>
+        <p>
+          Queremos ayudarte a encontrar el repuesto que necesitas
+          para tu vehículo.
+        </p>
+      </div>
+
+      <div class="beneficios">
+        <article class="beneficio">
+          <div class="icono">🔩</div>
+          <h3>Variedad de repuestos</h3>
+          <p>Consulta las diferentes líneas de autopartes disponibles.</p>
+        </article>
+
+        <article class="beneficio">
+          <div class="icono">🧰</div>
+          <h3>Asesoría personalizada</h3>
+          <p>Comparte el modelo, año y referencia de tu vehículo.</p>
+        </article>
+
+        <article class="beneficio">
+          <div class="icono">📲</div>
+          <h3>Atención por WhatsApp</h3>
+          <p>Consulta precios, referencias y disponibilidad con un asesor.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CATÁLOGO -->
+    <section class="catalogo" id="repuestos">
+      <div class="encabezado-seccion">
+        <h2>Nuestro catálogo de repuestos</h2>
+        <p>
+          Explora nuestras categorías y consulta cada producto
+          directamente con un asesor.
+        </p>
+      </div>
+
+      <div class="filtros">
+        <button class="filtro activo" data-filtro="todos">Todos</button>
+        <button class="filtro" data-filtro="frenos">Frenos</button>
+        <button class="filtro" data-filtro="suspension">Suspensión y dirección</button>
+        <button class="filtro" data-filtro="transmision">Transmisión</button>
+        <button class="filtro" data-filtro="motor">Motor y mantenimiento</button>
+      </div>
+
+      <div class="productos">
+
+        <!-- SURTIDO GENERAL -->
+        <article class="producto" data-categoria="motor">
+          <img src="images/01_surtido_autopartes.png"
+               alt="Surtido de repuestos automotores"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Catálogo general</span>
+            <h3>Surtido de autopartes</h3>
+            <p>
+              Consulta por diferentes repuestos para mantenimiento
+              y reparación de tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20consultar%20por%20el%20surtido%20de%20autopartes"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- DISCOS Y PASTILLAS -->
+        <article class="producto" data-categoria="frenos">
+          <img src="images/02_discos_y_pastillas.png"
+               alt="Discos y pastillas de freno"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Frenos</span>
+            <h3>Discos y pastillas de freno</h3>
+            <p>
+              Componentes del sistema de frenado. Consulta la referencia
+              compatible con tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20discos%20y%20pastillas%20de%20freno"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- PASTILLAS -->
+        <article class="producto" data-categoria="frenos">
+          <img src="images/03_pastillas_freno.png"
+               alt="Pastillas de freno automotrices"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Frenos</span>
+            <h3>Pastillas de freno</h3>
+            <p>
+              Consulta por pastillas de freno según marca, modelo
+              y año del vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20pastillas%20de%20freno"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- BOMBA DE FRENO -->
+        <article class="producto" data-categoria="frenos">
+          <img src="images/04_bomba_freno.png"
+               alt="Bomba de freno automotriz"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Frenos</span>
+            <h3>Bomba de freno</h3>
+            <p>
+              Consulta disponibilidad y compatibilidad con el sistema
+              de frenos de tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20una%20bomba%20de%20freno"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- AMORTIGUADORES -->
+        <article class="producto" data-categoria="suspension">
+          <img src="images/05_amortiguadores.png"
+               alt="Amortiguadores automotrices"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Suspensión</span>
+            <h3>Amortiguadores</h3>
+            <p>
+              Consulta por amortiguadores delanteros o traseros
+              para tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20amortiguadores"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- ESPIRALES -->
+        <article class="producto" data-categoria="suspension">
+          <img src="images/06_espirales_suspension.png"
+               alt="Espirales de suspensión"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Suspensión</span>
+            <h3>Espirales de suspensión</h3>
+            <p>
+              Pregunta por espirales y referencias para el sistema
+              de suspensión de tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20espirales%20de%20suspension"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- TIJERAS Y ROTULAS -->
+        <article class="producto" data-categoria="suspension">
+          <img src="images/07_tijeras_y_rotulas.png"
+               alt="Tijeras y rótulas de suspensión"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Suspensión y dirección</span>
+            <h3>Tijeras y rótulas</h3>
+            <p>
+              Consulta por componentes de suspensión y sus referencias
+              compatibles.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20tijeras%20y%20rotulas"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- TERMINALES -->
+        <article class="producto" data-categoria="suspension">
+          <img src="images/08_terminales_direccion.png"
+               alt="Terminales de dirección"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Dirección</span>
+            <h3>Terminales de dirección</h3>
+            <p>
+              Pregunta por terminales de dirección para tu marca,
+              modelo y año.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20terminales%20de%20direccion"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- EMBRAGUE -->
+        <article class="producto" data-categoria="transmision">
+          <img src="images/09_kit_embrague.png"
+               alt="Kit de embrague automotriz"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Transmisión</span>
+            <h3>Kit de embrague</h3>
+            <p>
+              Consulta por kit de embrague según las características
+              de tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20un%20kit%20de%20embrague"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- EJES HOMOCINETICOS -->
+        <article class="producto" data-categoria="transmision">
+          <img src="images/10_ejes_homocineticos.png"
+               alt="Ejes homocinéticos"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Transmisión</span>
+            <h3>Ejes homocinéticos</h3>
+            <p>
+              Consulta la referencia adecuada según la versión
+              y el modelo del vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20ejes%20homocineticos"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- BATERIA -->
+        <article class="producto" data-categoria="motor">
+          <img src="images/13_bateria_automotriz.png"
+               alt="Batería automotriz"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Sistema eléctrico</span>
+            <h3>Batería automotriz</h3>
+            <p>
+              Pregunta por baterías según las especificaciones
+              que requiere tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20consultar%20por%20una%20bateria%20automotriz"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- FILTROS -->
+        <article class="producto" data-categoria="motor">
+          <img src="images/15_filtros.png"
+               alt="Filtros automotrices"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Mantenimiento</span>
+            <h3>Filtros automotrices</h3>
+            <p>
+              Consulta por filtros de aire, aceite y combustible
+              para tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20filtros%20automotrices"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- SENSORES -->
+        <article class="producto" data-categoria="motor">
+          <img src="images/17_sensores_motor.png"
+               alt="Sensores electrónicos del motor"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Motor y electrónica</span>
+            <h3>Sensores de motor</h3>
+            <p>
+              Consulta por sensores y componentes electrónicos
+              según la referencia de tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20sensores%20de%20motor"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+        <!-- KIT REPARTICION -->
+        <article class="producto" data-categoria="motor">
+          <img src="images/19_kit_reparticion.png"
+               alt="Kit de repartición y distribución"
+               loading="lazy">
+          <div class="producto-contenido">
+            <span class="categoria">Motor</span>
+            <h3>Kit de repartición</h3>
+            <p>
+              Pregunta por kits de distribución y referencias
+              para el motor de tu vehículo.
+            </p>
+            <a class="boton"
+               href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20un%20kit%20de%20reparticion"
+               target="_blank" rel="noopener">Consultar con un asesor</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- MARCAS -->
+    <section id="marcas">
+      <div class="encabezado-seccion">
+        <h2>Marcas que manejamos</h2>
+        <p>
+          Consulta con nuestro equipo por referencias para tu vehículo.
+        </p>
+      </div>
+
+      <div class="marcas">
+        <div class="marca">CHEVROLET</div>
+        <div class="marca">SUZUKI</div>
+        <div class="marca">ISUZU</div>
+        <div class="marca">ACDelco</div>
+      </div>
+    </section>
+
+    <!-- LLAMADO A LA ACCIÓN -->
+    <section class="llamada" id="asesoria">
+      <h2>¿No encuentras el repuesto que buscas?</h2>
+      <p>
+        Escríbenos por WhatsApp. Indica la marca, el modelo, el año
+        y, si tienes, la referencia o una foto de la pieza.
+      </p>
+
+      <a class="boton boton-verde"
+         href="https://wa.me/573118736119?text=Hola%2C%20necesito%20ayuda%20de%20un%20asesor%20de%20Importadora%20Celeste"
+         target="_blank" rel="noopener">
+        Hablar con un asesor
+      </a>
+    </section>
+
+    <!-- CONTACTO Y COTIZACIÓN -->
+    <section id="contacto">
+      <div class="contacto">
+        <div>
+          <h2>Solicita tu cotización</h2>
+          <p>
+            Completa el formulario y se abrirá WhatsApp con los datos
+            que nos compartas.
+          </p>
+
+          <p>
+            Para facilitar la identificación del repuesto, puedes
+            enviar una foto de la pieza directamente en el chat.
+          </p>
+
+          <p><strong>WhatsApp:</strong> 311 873 6119</p>
+
+          <a class="boton boton-verde"
+             href="https://wa.me/573118736119?text=Hola%2C%20quiero%20hablar%20con%20un%20asesor%20de%20Importadora%20Celeste"
+             target="_blank" rel="noopener">
+            Contactar por WhatsApp
+          </a>
+        </div>
+
+        <form id="formulario-cotizacion">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" name="nombre"
+                 type="text" required
+                 placeholder="Escribe tu nombre">
+
+          <label for="marca-vehiculo">Marca del vehículo</label>
+          <select id="marca-vehiculo" name="marca" required>
+            <option value="">Selecciona una marca</option>
+            <option>Chevrolet</option>
+            <option>Suzuki</option>
+            <option>Isuzu</option>
+            <option>Otro</option>
+          </select>
+
+          <label for="modelo">Modelo y año</label>
+          <input id="modelo" name="modelo"
+                 type="text" required
+                 placeholder="Ej.: Chevrolet Spark GT 2020">
+
+          <label for="repuesto">Repuesto que necesitas</label>
+          <textarea id="repuesto" name="repuesto"
+                    required
+                    placeholder="Describe la pieza o referencia"></textarea>
+
+          <button class="boton boton-verde" type="submit">
+            Enviar consulta por WhatsApp
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIE DE PÁGINA -->
+  <footer>
+    <p><strong>IMPORTADORA CELESTE</strong></p>
+    <p>Repuestos y autopartes para tu vehículo.</p>
+    <p>Consulta con un asesor la disponibilidad y compatibilidad de cada pieza.</p>
+    <p>© 2026 Importadora Celeste. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+  <a class="whatsapp-flotante"
+     href="https://wa.me/573118736119?text=Hola%2C%20quiero%20cotizar%20un%20repuesto"
+     target="_blank" rel="noopener"
+     aria-label="Contactar a Importadora Celeste por WhatsApp">
+    WhatsApp ↗
+  </a>
+
+  <script>
+    // FILTRAR LOS REPUESTOS POR CATEGORÍA
+    const botonesFiltro = document.querySelectorAll(".filtro");
+    const productos = document.querySelectorAll(".producto");
+
+    botonesFiltro.forEach(function(boton) {
+      boton.addEventListener("click", function() {
+        const filtro = boton.dataset.filtro;
+
+        botonesFiltro.forEach(function(item) {
+          item.classList.remove("activo");
+        });
+
+        boton.classList.add("activo");
+
+        productos.forEach(function(producto) {
+          const categoria = producto.dataset.categoria;
+
+          if (filtro === "todos" || categoria === filtro) {
+            producto.classList.remove("oculto");
+          } else {
+            producto.classList.add("oculto");
+          }
+        });
+      });
+    });
+
+    // ENVIAR LOS DATOS DEL FORMULARIO A WHATSAPP
+    document.getElementById("formulario-cotizacion")
+      .addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const nombre = document.getElementById("nombre").value.trim();
+        const marca = document.getElementById("marca-vehiculo").value;
+        const modelo = document.getElementById("modelo").value.trim();
+        const repuesto = document.getElementById("repuesto").value.trim();
+
+        const mensaje =
+          "Hola, Importadora Celeste. Quiero cotizar un repuesto.\n\n" +
+          "Nombre: " + nombre + "\n" +
+          "Marca del vehículo: " + marca + "\n" +
+          "Modelo y año: " + modelo + "\n" +
+          "Repuesto solicitado: " + repuesto;
+
+        const url = "https://wa.me/573118736119?text=" +
+          encodeURIComponent(mensaje);
+
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+  </script>
+
+</body>
+</html>
